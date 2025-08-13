@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+body>div {
+    display: inline-flex;
+    float: left;
+    margin: 30px;      
+}
+
+.inputs {
+    float: left;
+}
+
+label {
+    font-size: 27.5px; 
+    display: inline-block;
+    cursor: pointer;
+    transform-origin: 50% 85%;
+    rotate: -45deg;
+}
+
+label:last-child {
+    margin-top: 5px;
+}
+
+.toggle:checked ~ label {
+    rotate: 45deg;
+}
+
+.gate {
+    background: url(https://imgs.xkcd.com/comics/logic_gates_2x.png);
+    width: 190px; 
+    height: 160px;
+    margin-top: 13px;
+    float: left;
+}
+
+.and .gate {background-position: -38px -117px;}
+.or .gate {background-position: -246px -117px;}
+.not .gate {background-position: -449px -117px;}
+.nor .gate {background-position: -647px -117px;}
+.xor .gate {background-position: -40px -290px;}
+.nand .gate {background-position: -246px -290px;}
+.norx .gate {background-position: -449px -290px;}
+.gand .gate {background-position: -647px -290px;}
+.xand .gate {background-position: -40px -464px;}
+.norg .gate {background-position: -246px -464px;}
+.andorx .gate {background-position: -436px -453px;}
+.norxondor .gate {background-position: -647px -453px; height: 175px}
+
+.not label, .norx label {margin-top: 24px;}
+
+.andorx label, .norxondor label {margin-top: 17px;}
+
+.control-me::after, :has(#not:checked)>.control-me::after, :has(#nand1:checked):has(#nand2:checked)>.control-me::after {
+    content: "💡";
+    font-size: 45px;
+    margin-left: -15px;
+    opacity: 0.5;
+}
+
+:has(#and1:checked):has(#and2:checked)>.control-me::after, :has(#or1:checked)>.control-me::after, :has(#or2:checked)>.control-me::after, .not .control-me::after, :has(#nor1:not(:checked)):has(#nor2:not(:checked))>.control-me::after, :has(#xor1:not(:checked)):has(#xor2:checked)>.control-me::after, :has(#xor2:not(:checked)):has(#xor1:checked)>.control-me::after, .nand .control-me::after {
+    opacity: 1;
+}
+
+a {text-decoration: none;}
+
+.visually-hidden {
+    position: absolute;
+    left: -100vw;
+    
+    /* Note, you may want to position the checkbox over top the label and set the opacity to zero instead. It can be better for accessibilty on some touch devices for discoverability. */
+}
+
+p {clear: both;}
+    </style>
+    <title>Document</title>
+</head>
+<body>
+
+<h1>LOGIC GATES</h1>
+    <div id="root1"></div>
+
+
+    <br><div class="and">
+    
+        <div class="inputs">
+            <div>
+                <input type="checkbox" id="and1" class="toggle visually-hidden">
+                <label for="and1">📍</label>
+            </div>
+    
+            <div>
+                <input type="checkbox" id="and2" class="toggle visually-hidden">
+                <label for="and2">📍</label>
+            </div>
+        </div>
+        
+        <div class="gate"></div>
+        
+        <div class="control-me"></div>
+        
+    </div>
+    
+    <div class="or">
+        
+        <div class="inputs">
+            <div>
+                <input type="checkbox" id="or1" class="toggle visually-hidden">
+                <label for="or1">📍</label>
+            </div>
+    
+            <div>
+                <input type="checkbox" id="or2" class="toggle visually-hidden">
+                <label for="or2">📍</label>
+            </div>
+        </div>
+        
+        <div class="gate"></div>
+        
+        <div class="control-me"></div>
+        
+    </div>
+    
+    <div class="not">
+        
+        <div class="inputs">
+            <div>
+                <input type="checkbox" id="not" class="toggle visually-hidden">
+                <label for="not">📍</label>
+            </div>
+        </div>
+        
+        <div class="gate"></div>
+        
+        <div class="control-me"></div>
+        
+    </div>
+    
+    <div class="nor">
+        
+        <div class="inputs">
+            <div>
+                <input type="checkbox" id="nor1" class="toggle visually-hidden">
+                <label for="nor1">📍</label>
+            </div>
+    
+            <div>
+                <input type="checkbox" id="nor2" class="toggle visually-hidden">
+                <label for="nor2">📍</label>
+            </div>
+        </div>
+        
+        <div class="gate"></div>
+        
+        <div class="control-me"></div>
+        
+    </div>
+    
+    <div class="xor">
+        
+        <div class="inputs">
+            <div>
+                <input type="checkbox" id="xor1" class="toggle visually-hidden">
+                <label for="xor1">📍</label>
+            </div>
+    
+            <div>
+                <input type="checkbox" id="xor2" class="toggle visually-hidden">
+                <label for="xor2">📍</label>
+            </div>
+        </div>
+        
+        <div class="gate"></div>
+        
+        <div class="control-me"></div>
+        
+    </div>
+    
+    <div class="nand">
+        
+        <div class="inputs">
+            <div>
+                <input type="checkbox" id="nand1" class="toggle visually-hidden">
+                <label for="nand1">📍</label>
+            </div>
+    
+            <div>
+                <input type="checkbox" id="nand2" class="toggle visually-hidden">
+                <label for="nand2">📍</label>
+            </div>
+        </div>
+        
+        <div class="gate"></div>
+        
+        <div class="control-me"></div>
+        
+    </div>
+    
+   
+    
+   
+        
+        
+   <script>
+    const buttonSize = 30;
+
+const xor = (a, b) => !a !== !b;
+
+const sumArr = (arr) =>
+  arr.reduce(
+    (accumulator, currentValue, currentIndex, array) =>
+      accumulator + currentValue,
+    0
+  );
+
+const halfAdder = (a, b) => {
+  const halfSum = xor;
+  const halfCarry = (a, b) => a && b;
+
+  const s = halfSum(a, b);
+  const c = halfCarry(a, b);
+  return [s, c];
+};
+
+const adder = (a, b, carryIn = 0) => {
+  const [s1, c1] = halfAdder(a, b);
+  const [s2, c2] = halfAdder(carryIn, s1);
+  const carryOut = c1 || c2;
+  return [s2, carryOut];
+};
+
+const byteAdder = (a, b, carryIn = 0) => {
+  const result = Array(8);
+  const carryA = Array(8);
+
+  let carry = carryIn;
+  for (i = 0; i < 8; i++) {
+    const [s, c] = adder(a[i], b[i], carry);
+    carry = c;
+    result[i] = s;
+  }
+
+  return [result, carry];
+};
+
+const byteToDec = (arr, carry = 0) =>
+  sumArr(
+    arr.map((currentValue, currentIndex) =>
+      currentValue ? Math.pow(2, currentIndex) : 0
+    )
+  ) + (carry ? 256 : 0);
+
+const Button = ({ value, toggle, empty }) => (
+  <div
+    style={{
+      width: `${buttonSize}px`,
+      height: `${buttonSize}px`,
+      backgroundColor: value ? "red" : "white",
+      border: empty ? "1px solid white" : "1px solid grey"
+    }}
+    onClick={toggle}
+  />
+);
+
+const useTogglableBits = (size = 8) => {
+  const [bits, setBits] = React.useState(Array(size));
+
+  const toggleBit = (i) => {
+    let bb = Array.from(bits);
+    bb[i] = !bb[i];
+    setBits(bb);
+  };
+
+  return { bits, toggleBit };
+};
+
+const ByteButtons = ({ value, toggleBit }) => (
+  <>
+    {[...Array(8).keys()].map((i) => (
+      <td key={i}>
+        <Button
+          value={value[7 - i]}
+          toggle={toggleBit ? () => toggleBit(7 - i) : null}
+        />
+      </td>
+    ))}
+  </>
+);
+
+const BinaryInput = ({ value, toggleBit, showDecimal = true }) => (
+  <>
+    <td>
+      <Button empty />
+    </td>
+    <ByteButtons value={value} toggleBit={toggleBit} />
+    {showDecimal && <td>{byteToDec(value)}</td>}
+  </>
+);
+
+const BinaryOutput = ({ value, carry, showDecimal = true }) => (
+  <>
+    <td>
+      <Button value={carry} />
+    </td>
+    <ByteButtons value={value} />
+    {showDecimal && <td>{byteToDec(value, carry)}</td>}
+  </>
+);
+
+const ValidateSum = ({ a, b, result, carry }) => {
+  const actual = byteToDec(result) + (carry ? 256 : 0);
+  const expected = byteToDec(a) + byteToDec(b);
+
+  return actual !== expected ? <td>MISMATCH {expected}</td> : null;
+};
+
+const App = (props) => {
+  const { bits: a, toggleBit: toggleA } = useTogglableBits(8);
+  const { bits: b, toggleBit: toggleB } = useTogglableBits(8);
+
+  const [result, carryOut] = byteAdder(a, b);
+
+  return (
+    <table>
+      <tbody>
+        <tr>
+          <BinaryInput value={a} toggleBit={toggleA} />
+        </tr>
+        <tr>
+          <BinaryInput value={b} toggleBit={toggleB} />
+        </tr>
+        <tr>
+          <BinaryOutput value={result} carry={carryOut} />
+        </tr>
+        <tr>
+          <ValidateSum a={a} b={b} result={result} carry={carryOut} />
+        </tr>
+      </tbody>
+    </table>
+  );
+};
+
+ReactDOM.render(<App />, document.getElementById("root1"));
+
+   </script> 
+   
+</body>
+</html>
