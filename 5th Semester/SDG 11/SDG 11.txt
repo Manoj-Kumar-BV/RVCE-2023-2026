@@ -1,0 +1,9 @@
+1. Solar-Powered EV Charging Stations
+	Electronics & Communication:
+		Solar panels integrated with IoT-enabled energy meters.
+		RFID-based authentication for charging vehicles.
+	Computer Science:
+		AI to optimize energy distribution based on demand.
+		App for real-time availability and booking of charging slots.
+		Blockchain for secure payment and transaction history.
+
